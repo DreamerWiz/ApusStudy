@@ -24,3 +24,15 @@
 - CronTick 更新排行
 - JoinPool 加入池子参与比赛
 - CreatePool 可以创建Pool的时候 指定ProcessId
+
+
+## Flows
+
+### 池子创建者/竞赛发起者
+pool::Create-Pool 接受参数为title，processId, 以及Metadata，透传记录。接受用户的转账
+
+### 竞赛参与者
+pool::Join-Pool 检查时间，白名单，重复参与。写入SQL生成一条Participant记录，调用上面那个Process的Join-Pool，也就是sas_competition::Join-Pool, cronTick出发更新评分排名。
+
+### Evaluate/Chat逻辑
+先调用RAG的SearchPrompt获取llama层的context，然后获取返回值
